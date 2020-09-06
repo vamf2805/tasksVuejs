@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas Vue</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+    <style>
+        .tasksDone{
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <!-- Vuejs component -->
+    <div id="taskApp">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container">
+                <a class="nav-brand">
+                    {{nameApp}}
+                </a>
+            </div>
+        </nav>
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-sm-8">
+                    <!--Table-->
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Hecho</th>
+                                <th>Tareas</th>
+                                <th>Eliminar</th>
+                            </tr>
+                            <tbody>
+                                <tr v-for="task in tasks">
+                                    <td>
+                                        <input type="checkbox" v-model="task.hecho">
+                                    </td>
+                                    <td>
+                                        <span :class="{tasksDone: task.hecho}">
+                                        {{ task.title }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger" v-on:click="deleteTask(task)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </thead>
+                    </table>
+                </div> 
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <form v-on:submit="addTask">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Agregar tarea" v-model="tasks.title">
+                                    <input type="submit" value="Agregar" class="btn btn-success btn-block">
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+        </div>
+    </div>
+    
+
+    <!--CDN VueJS-->
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        new Vue({
+            el:'#taskApp',
+            data:{
+                nameApp: 'Tareas Vue.js',
+                tasks:[
+                    {
+                        title:'task 1',
+                        hecho:true
+                    },
+                    {
+                        title: 'task 2',
+                        hecho:false
+                    },
+                    {
+                        title: 'task 3',
+                        hecho:false
+                    }
+                ]
+            },
+            methods:{
+                deleteTask: function(task){
+                    this.tasks.splice(this.tasks.indexOf(task),1)
+                },
+                addTask: function(e){
+                    e.preventDefault();
+                    this.tasks.push({
+                        title:this.tasks.title,
+                        hecho:false
+                    })
+                    this.tasks.title = ''
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>
